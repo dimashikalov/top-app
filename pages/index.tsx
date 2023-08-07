@@ -4,7 +4,7 @@ export default function Home(): JSX.Element {
   return (
     <>
       <Htag tag='h1'>Hello world</Htag>
-      <Button appearance='primary'>CLick me</Button>
+      <Button appearance='primary' >CLick me</Button>
    </>
   );
 }
