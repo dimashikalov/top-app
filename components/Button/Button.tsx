@@ -10,6 +10,7 @@ export const Button = ({ children, arrow = 'none', appearance, className, ...pro
 		[styles.ghost]: appearance == 'ghost'
 		})}
 		{...props}
+		
 	>
 		{children}
 		{arrow != 'none' && <span className={cn(styles.arrow, {
