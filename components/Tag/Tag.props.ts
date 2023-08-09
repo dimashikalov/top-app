@@ -1,8 +1,9 @@
-import { ReactNode, DetailedProps, HTMLAttributes } from 'react';
+import { ReactNode, DetailedHTMLProps, HTMLAttributes } from "react";
 
-export interface TagProps extends DetailedProps<HTMLAttributes<HTMLDivElement>,HTMLDivElement> {
-	p: "s" | "m";
-	children: ReactNode;
-	color: "ghost" | "red" | 'grey' | 'green' | 'primary';
-	href?: string
+export interface TagProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+  size: "s" | "m";
+  children: ReactNode;
+  color: "ghost" | "red" | "grey" | "green" | "primary";
+  href?: string;
 }
