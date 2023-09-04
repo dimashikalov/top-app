@@ -1,5 +1,5 @@
 import { withLayout } from "@/layout/Layout";
-import { Button, Htag, P, Rating, Tag } from "../components";
+import { Button, Htag, Input, P, Rating, Tag } from "../components";
 import React, { useState } from "react";
 import { GetStaticProps } from "next";
 import axios from "axios";
@@ -46,6 +46,7 @@ function Home(): JSX.Element {
         mediem
       </Tag>
       <Rating rating={rating} isEditable setRating={setRating} />
+      <Input placeholder="test" />
     </>
   );
 }
