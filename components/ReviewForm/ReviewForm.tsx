@@ -5,7 +5,9 @@ import CloseIcon from "./close.svg";
 import { Button, Input, Rating, Textarea } from "..";
 import { useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { IReviewForm } from "./ReviewForm.interface";
+import { IReviewForm, IReviewSentResponse } from "./ReviewForm.interface";
+import axios from "axios";
+import { API } from "@/helpers/api";
 
 export const ReviewForm = ({
   productId,
@@ -17,11 +19,30 @@ export const ReviewForm = ({
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<IReviewForm>();
-  // const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
 
-  const onSubmit: SubmitHandler<IReviewForm> = (data: IReviewForm) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<IReviewForm> = async (
+    formData: IReviewForm
+  ) => {
+    try {
+      const { data } = await axios.post<IReviewSentResponse>(
+        API.review.createDemo,
+        { ...formData, productId }
+      );
+      if (data.message) {
+        setIsSuccess(true);
+        reset();
+      } else {
+        setError("Что-то пошло не так");
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message);
+      }
+    }
   };
 
   return (
@@ -85,19 +106,32 @@ export const ReviewForm = ({
         </div>
       </div>
 
-      {/* {isSuccess && ( */}
-      <div className={cn(styles.success, styles.panel)} role="alert">
-        <div className={styles.successTitle}>Ваш отзыв отправлен</div>
-        <div>Спасибо, ваш отзыв будет опубликован после проверки.</div>
-        <button
-          // onClick={() => setIsSuccess(false)}
-          className={styles.close}
-          aria-label="Закрыть оповещение"
-        >
-          <CloseIcon />
-        </button>
-      </div>
-      {/* )} */}
+      {isSuccess && (
+        <div className={cn(styles.success, styles.panel)} role="alert">
+          <div className={styles.successTitle}>Ваш отзыв отправлен</div>
+          <div>Спасибо, ваш отзыв будет опубликован после проверки.</div>
+          <button
+            onClick={() => setIsSuccess(false)}
+            className={styles.close}
+            aria-label="Закрыть оповещение"
+          >
+            <CloseIcon />
+          </button>
+        </div>
+      )}
+
+      {error && (
+        <div className={cn(styles.error, styles.panel)} role="alert">
+          Что-то пошло не так, попробуйте обновить страницу
+          <button
+            onClick={() => setError(undefined)}
+            className={styles.close}
+            aria-label="Закрыть оповещение"
+          >
+            <CloseIcon />
+          </button>
+        </div>
+      )}
     </form>
   );
 };
